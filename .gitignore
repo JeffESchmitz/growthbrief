@@ -20,6 +20,6 @@ build/
 .coverage
 
 # Local data & reports
-data/cache/
+data/
 reports/*.html
 reports/*.json
