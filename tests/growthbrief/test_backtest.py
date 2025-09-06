@@ -34,7 +34,10 @@ def test_run_backtest_deterministic_results(synthetic_grs_df, synthetic_prices_d
     for i in range(1, len(results)):
         for key in results[0].keys():
             if isinstance(results[0][key], float) and isinstance(results[i][key], float):
-                assert np.isclose(results[0][key], results[i][key])
+                if np.isnan(results[0][key]) and np.isnan(results[i][key]):
+                    assert True
+                else:
+                    assert np.isclose(results[0][key], results[i][key])
             else:
                 assert results[0][key] == results[i][key]
 
