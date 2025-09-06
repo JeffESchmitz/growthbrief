@@ -5,7 +5,7 @@ import vectorbt as vbt
 # Suppress vectorbt warnings for cleaner output
 vbt.settings.set_theme("dark")
 
-vbt.settings.plotting["ohlcv_kwargs"] = dict(width=700)
+
 vbt.settings.returns["year_freq"] = "365 days"
 
 def run_backtest(grs_df: pd.DataFrame, prices: pd.DataFrame, top_n: int = 5) -> dict:
