@@ -12,13 +12,13 @@ def synthetic_grs_df():
     df = pd.DataFrame(data, index=['AAPL', 'MSFT', 'GOOG', 'AMZN', 'META', 'TSLA', 'NVDA', 'NFLX'])
     return df
 
-# Fixture for synthetic daily price DataFrame
+    # Fixture for synthetic daily price DataFrame
 @pytest.fixture
 def synthetic_prices_df():
-    dates = pd.date_range(start='2023-01-01', periods=365, freq='D')
+    dates = pd.date_range(start='2023-01-01', periods=365 * 2, freq='D') # 2 years of data
     tickers = ['AAPL', 'MSFT', 'GOOG', 'AMZN', 'META', 'TSLA', 'NVDA', 'NFLX']
     data = {
-        ticker: np.linspace(100, 150 + i*10, 365) for i, ticker in enumerate(tickers)
+        ticker: np.linspace(100, 200 + i*10, 365 * 2) for i, ticker in enumerate(tickers)
     }
     df = pd.DataFrame(data, index=dates)
     return df
