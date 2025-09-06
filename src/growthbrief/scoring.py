@@ -3,17 +3,16 @@ import numpy as np
 from scipy.stats import rankdata
 
 # Import feature functions
-from growthbrief.features.fundamentals import fundamentals_snapshot
-from growthbrief.features.quality import quality_snapshot
-from growthbrief.features.valuation import valuation_snapshot
-from growthbrief.features.industry import industry_snapshot
-from growthbrief.features.technical import technical_snapshot
 
 def pct_rank(series: pd.Series) -> pd.Series:
     """
     Calculates percentile rank of a series, handling NaNs.
     """
-    return pd.Series(rankdata(series, method='average') / len(series) * 100, index=series.index)
+    non_nan_series = series.dropna()
+    if non_nan_series.empty:
+        return pd.Series(np.nan, index=series.index)
+    ranked_non_nan = pd.Series(rankdata(non_nan_series, method='average') / len(non_nan_series) * 100, index=non_nan_series.index)
+    return ranked_non_nan.reindex(series.index)
 
 def winsorize_series(series: pd.Series, lower_bound: float = 1, upper_bound: float = 99) -> pd.Series:
     """
