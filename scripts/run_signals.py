@@ -46,7 +46,7 @@ def main():
         sys.exit(0)
 
     try:
-        prices = gb_data.get_prices(symbols, lookback_days=400)
+        prices = gb_data.get_prices(symbols)
     except Exception as e:
         print(f"[red]Failed to load prices:[/red] {e}")
         sys.exit(1)
@@ -68,16 +68,18 @@ def main():
     table.add_column("Vol20d", justify="right")
     table.add_column("Uptrend", justify="center")
 
-    for sym, m in metrics.items():
+    latest_metrics = metrics.iloc[-1] # Get the last row of the DataFrame
+
+    for sym in symbols:
         table.add_row(
             sym,
-            f"{m.get('price', float('nan')):.2f}",
-            f"{m.get('six_month_momentum_pct', float('nan')):.2f}",
-            f"{m.get('sma_50', float('nan')):.2f}",
-            f"{m.get('sma_100', float('nan')):.2f}",
-            f"{m.get('sma_200', float('nan')):.2f}",
-            f"{m.get('volatility_20d', float('nan')):.4f}",
-            "✅" if m.get("is_uptrend") else "—",
+            f"{latest_metrics[sym]:.2f}", # Last price for the symbol
+            f"{latest_metrics['six_month_momentum_pct'][sym]:.2f}",
+            f"{latest_metrics['SMA50'][sym]:.2f}",
+            f"{latest_metrics['SMA100'][sym]:.2f}",
+            f"{latest_metrics['SMA200'][sym]:.2f}",
+            f"{latest_metrics['20d_volatility'][sym]:.4f}",
+            "✅" if latest_metrics['is_uptrend'][sym] else "—",
         )
 
     print(table)
@@ -85,21 +87,13 @@ def main():
     # Save CSV
     out_csv = OUT_DIR / f"signals_{date.today().isoformat()}.csv"
     try:
-        import csv as _csv
-        with open(out_csv, "w", newline="") as f:
-            w = _csv.writer(f)
-            w.writerow(["Symbol","Price","six_month_momentum_pct","sma_50","sma_100","sma_200","volatility_20d","is_uptrend"])
-            for sym, m in metrics.items():
-                w.writerow([
-                    sym,
-                    f"{m.get('price', float('nan'))}",
-                    f"{m.get('six_month_momentum_pct', float('nan'))}",
-                    f"{m.get('sma_50', float('nan'))}",
-                    f"{m.get('sma_100', float('nan'))}",
-                    f"{m.get('sma_200', float('nan'))}",
-                    f"{m.get('volatility_20d', float('nan'))}",
-                    int(bool(m.get('is_uptrend'))),
-                ])
+        # Select only the relevant columns for saving
+        cols_to_save = symbols + ['SMA50', 'SMA100', 'SMA200', 'six_month_momentum_pct', '20d_volatility', 'is_uptrend']
+        # Get the last row for all symbols and relevant signal columns
+        df_to_save = metrics[cols_to_save].iloc[-1:].T # Transpose to have symbols as index
+        df_to_save.index.name = "Symbol"
+        df_to_save.columns = ["Price", "SMA50", "SMA100", "SMA200", "six_month_momentum_pct", "20d_volatility", "is_uptrend"] # Rename columns for clarity
+        df_to_save.to_csv(out_csv)
         print(f"[green]Saved:[/green] {out_csv}")
     except Exception as e:
         print(f"[red]Failed to save CSV:[/red] {e}")
