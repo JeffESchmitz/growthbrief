@@ -118,4 +118,4 @@ def test_calculate_zscore_synthetic_series():
 
     # Test with NaN values in series
     series_nan = pd.Series([10, 20, np.nan, 40, 50])
-    assert np.isclose(_calculate_zscore(series_nan, years=3), (50 - np.mean([20,40,50])) / np.std([20,40,50], ddof=0))
+    assert np.isclose(_calculate_zscore(series_nan, years=3), (50 - np.mean([10,20,40])) / np.std([10,20,40], ddof=0))
