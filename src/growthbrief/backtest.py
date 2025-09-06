@@ -76,7 +76,7 @@ def run_backtest(grs_df: pd.DataFrame, prices: pd.DataFrame, top_n: int = 5) -> 
     # For monthly rebalance, we'll create a signal at the start of each month.
 
     # Get monthly rebalance points
-    rebalance_dates = prices.index.to_period('M').drop_duplicates().to_timestamp('start')
+    rebalance_dates = prices.index.to_period('M').drop_duplicates().map(lambda x: x.start_time)
 
     # Create an empty signal DataFrame
     
