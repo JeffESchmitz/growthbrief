@@ -37,7 +37,7 @@ def run_backtest(grs_df: pd.DataFrame, prices: pd.DataFrame, top_n: int = 5) -> 
     # We need daily prices for backtesting.
 
     # Ensure prices DataFrame has a DatetimeIndex and columns are tickers
-    prices.index = pd.to_datetime(prices.index)
+    prices.index = pd.to_datetime(prices.index).drop_duplicates()
     prices = prices.sort_index()
 
     # Ensure GRS DataFrame has a DatetimeIndex and columns are tickers (or GRS column)
