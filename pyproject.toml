@@ -2,7 +2,7 @@
 name = "growthbrief"
 version = "0.1.0"
 description = "Experimental portfolio + AI analysis toolkit"
-requires-python = ">=3.11, <3.12"
+requires-python = ">=3.13.2"
 dependencies = []
 [[project.authors]]
 name = "Jeff (and Personas)"
