@@ -125,6 +125,7 @@ def run_backtest(grs_df: pd.DataFrame, prices: pd.DataFrame, top_n: int = 5) -> 
         freq='1D', # Daily frequency for prices
         direction='longonly',
         accumulate=False, # Rebalance fully
+        group_by=False,
     )
 
     # Calculate metrics
