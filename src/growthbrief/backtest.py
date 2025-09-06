@@ -4,7 +4,7 @@ import vectorbt as vbt
 
 # Suppress vectorbt warnings for cleaner output
 vbt.settings.set_theme("dark")
-vbt.settings.plotting["layout_kwargs"] = dict(height=300, width=700)
+
 vbt.settings.plotting["ohlcv_kwargs"] = dict(width=700)
 vbt.settings.returns["year_freq"] = "365 days"
 
@@ -79,7 +79,7 @@ def run_backtest(grs_df: pd.DataFrame, prices: pd.DataFrame, top_n: int = 5) -> 
     rebalance_dates = prices.index.to_period('M').drop_duplicates().to_timestamp('begin')
 
     # Create an empty signal DataFrame
-    signal = pd.DataFrame(False, index=prices.index, columns=prices.columns)
+    
 
     # This part needs actual historical GRS data to be meaningful.
     # For demonstration, we'll just pick random top N for each rebalance date.
