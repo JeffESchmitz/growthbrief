@@ -125,7 +125,6 @@ def run_backtest(grs_df: pd.DataFrame, prices: pd.DataFrame, top_n: int = 5) -> 
         freq='1D', # Daily frequency for prices
         direction='longonly',
         accumulate=False, # Rebalance fully
-        call_before_passing_orders=lambda x, y: x.clear_all_positions(), # Clear positions before new entries
     )
 
     # Calculate metrics
