@@ -8,6 +8,7 @@ import csv
 from datetime import date, timedelta
 from pathlib import Path
 
+import pandas as pd
 from rich import print
 from rich.table import Table
 import pandas as pd
@@ -104,6 +105,7 @@ def main():
             data_for_csv.append(row_data)
         
         df_to_save = pd.DataFrame(data_for_csv)
+        df_to_save = df_to_save[["Symbol", "Price", "six_month_momentum_pct", "SMA50", "SMA100", "SMA200", "20d_volatility", "is_uptrend"]]
         df_to_save.to_csv(out_csv, index=False)
         print(f"[green]Saved:[/green] {out_csv}")
     except Exception as e:
