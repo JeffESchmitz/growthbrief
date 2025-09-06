@@ -1,0 +1,13 @@
+.github/workflows/*
+.github/**
+.gitignore
+LICENSE
+README.md
+GEMINI.md
+VERSION
+*.xcodeproj/*
+*.xcworkspace/*
+.env
+.env.*
+data/**
+reports/**

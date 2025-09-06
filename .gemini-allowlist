@@ -1,0 +1,8 @@
+src/growthbrief/*
+tests/*
+prompts/*
+schema/*
+scripts/*
+pyproject.toml
+requirements.txt
+Makefile
