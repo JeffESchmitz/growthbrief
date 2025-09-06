@@ -21,7 +21,7 @@ def _calculate_zscore(series: pd.Series, years: int = 3) -> float:
         return np.nan
 
     # Calculate z-score of the current value against the historical data
-    return (current_value - historical_data.mean()) / historical_data.std()
+    return (current_value - historical_data.mean()) / historical_data.std(ddof=0)
 
 def valuation_snapshot(ticker: str) -> dict:
     """
