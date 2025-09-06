@@ -129,13 +129,30 @@ def run_backtest(grs_df: pd.DataFrame, prices: pd.DataFrame, top_n: int = 5) -> 
     )
 
     # Calculate metrics
-    metrics = {
-        'cagr': pf.annual_returns().iloc[0] if pf.annual_returns().shape[0] > 0 else np.nan,
-        'stdev': pf.annualized_volatility().iloc[0] if pf.annualized_volatility().shape[0] > 0 else np.nan,
-        'max_drawdown': pf.max_drawdown().iloc[0] if pf.max_drawdown().shape[0] > 0 else np.nan,
-        'hit_rate': pf.trades.win_rate() if pf.trades.count().sum() > 0 else np.nan,
-        'sharpe_ratio': pf.sharpe_ratio().iloc[0] if pf.sharpe_ratio().shape[0] > 0 else np.nan,
-        'total_return': pf.total_return().iloc[0] if pf.total_return().shape[0] > 0 else np.nan,
-    }
+    metrics = {}
+    try:
+        metrics['cagr'] = pf.annual_returns().item()
+    except (ValueError, IndexError):
+        metrics['cagr'] = np.nan
+    try:
+        metrics['stdev'] = pf.annualized_volatility().item()
+    except (ValueError, IndexError):
+        metrics['stdev'] = np.nan
+    try:
+        metrics['max_drawdown'] = pf.max_drawdown().item()
+    except (ValueError, IndexError):
+        metrics['max_drawdown'] = np.nan
+    try:
+        metrics['hit_rate'] = pf.trades.win_rate().item()
+    except (ValueError, IndexError):
+        metrics['hit_rate'] = np.nan
+    try:
+        metrics['sharpe_ratio'] = pf.sharpe_ratio().item()
+    except (ValueError, IndexError):
+        metrics['sharpe_ratio'] = np.nan
+    try:
+        metrics['total_return'] = pf.total_return().item()
+    except (ValueError, IndexError):
+        metrics['total_return'] = np.nan
 
     return metrics
