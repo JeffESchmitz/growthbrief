@@ -17,6 +17,7 @@ build/
 
 # Test/CI artifacts
 .pytest_cache/
+.coverage
 
 # Local data & reports
 data/cache/
