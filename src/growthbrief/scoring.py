@@ -18,8 +18,8 @@ def winsorize_series(series: pd.Series, lower_bound: float = 1, upper_bound: flo
     """
     Winsorizes a series to the specified percentile bounds.
     """
-    lower_value = np.nanpercentile(series.dropna(), lower_bound)
-    upper_value = np.nanpercentile(series.dropna(), upper_bound)
+    lower_value = series.quantile(lower_bound / 100.0)
+    upper_value = series.quantile(upper_bound / 100.0)
     return series.clip(lower=lower_value, upper=upper_value)
 
 def score_grs(df: pd.DataFrame) -> pd.DataFrame:
