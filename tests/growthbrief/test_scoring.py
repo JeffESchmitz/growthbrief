@@ -50,8 +50,8 @@ def test_winsorize_series():
     winsorized = winsorize_series(series, lower_bound=5, upper_bound=95)
     assert np.isclose(winsorized.min(), 5.95)
     assert np.isclose(winsorized.max(), 95.05)
-    assert winsorized.iloc[0] == 5
-    assert winsorized.iloc[-1] == 95
+    assert np.isclose(winsorized.iloc[0], 5.95)
+    assert np.isclose(winsorized.iloc[-1], 95.05)
     assert winsorized.iloc[50] == 51
 
     series_with_nan = pd.Series([1, 2, 100, np.nan, 500])
