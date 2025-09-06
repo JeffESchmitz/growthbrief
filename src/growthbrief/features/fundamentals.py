@@ -1,5 +1,4 @@
 import yfinance as yf
-import pandas as pd
 import numpy as np
 
 def fundamentals_snapshot(ticker: str) -> dict:
@@ -54,8 +53,7 @@ def fundamentals_snapshot(ticker: str) -> dict:
         capex = cash_flow.get('Capital Expenditures') # This might be negative in yfinance
         
         # Ensure capex is treated as a positive cost for FCF calculation
-        if capex is not None:
-            capex = capex.abs()
+        
 
         fcf = cfo + capex if cfo is not None and capex is not None else None # FCF = CFO - CapEx (CapEx is usually negative in yfinance)
         fcf_margin = (fcf / revenue).iloc[0] if fcf is not None and revenue is not None and not revenue.empty and revenue.iloc[0] != 0 else np.nan
