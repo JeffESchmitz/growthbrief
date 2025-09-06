@@ -5,11 +5,12 @@ This is a starter script; it will work once data.get_prices and signals.compute 
 import os
 import sys
 import csv
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 from rich import print
 from rich.table import Table
+import pandas as pd
 
 try:
     from growthbrief import data as gb_data
@@ -73,13 +74,13 @@ def main():
     for sym in symbols:
         table.add_row(
             sym,
-            f"{latest_metrics[sym]:.2f}", # Last price for the symbol
-            f"{latest_metrics['six_month_momentum_pct'][sym]:.2f}",
-            f"{latest_metrics['SMA50'][sym]:.2f}",
-            f"{latest_metrics['SMA100'][sym]:.2f}",
-            f"{latest_metrics['SMA200'][sym]:.2f}",
-            f"{latest_metrics['20d_volatility'][sym]:.4f}",
-            "✅" if latest_metrics['is_uptrend'][sym] else "—",
+            f"{latest_metrics[(sym, 'Price')]:.2f}", # Last price for the symbol
+            f"{latest_metrics[(sym, 'six_month_momentum_pct')]:.2f}",
+            f"{latest_metrics[(sym, 'SMA50')]:.2f}",
+            f"{latest_metrics[(sym, 'SMA100')]:.2f}",
+            f"{latest_metrics[(sym, 'SMA200')]:.2f}",
+            f"{latest_metrics[(sym, '20d_volatility')]:.4f}",
+            "✅" if latest_metrics[(sym, 'is_uptrend')] else "—",
         )
 
     print(table)
@@ -87,13 +88,23 @@ def main():
     # Save CSV
     out_csv = OUT_DIR / f"signals_{date.today().isoformat()}.csv"
     try:
-        # Select only the relevant columns for saving
-        cols_to_save = symbols + ['SMA50', 'SMA100', 'SMA200', 'six_month_momentum_pct', '20d_volatility', 'is_uptrend']
-        # Get the last row for all symbols and relevant signal columns
-        df_to_save = metrics[cols_to_save].iloc[-1:].T # Transpose to have symbols as index
-        df_to_save.index.name = "Symbol"
-        df_to_save.columns = ["Price", "SMA50", "SMA100", "SMA200", "six_month_momentum_pct", "20d_volatility", "is_uptrend"] # Rename columns for clarity
-        df_to_save.to_csv(out_csv)
+        # Create a DataFrame for saving with single-level columns
+        data_for_csv = []
+        for sym in symbols:
+            row_data = {
+                "Symbol": sym,
+                "Price": latest_metrics[(sym, 'Price')],
+                "six_month_momentum_pct": latest_metrics[(sym, 'six_month_momentum_pct')],
+                "SMA50": latest_metrics[(sym, 'SMA50')],
+                "SMA100": latest_metrics[(sym, 'SMA100')],
+                "SMA200": latest_metrics[(sym, 'SMA200')],
+                "20d_volatility": latest_metrics[(sym, '20d_volatility')],
+                "is_uptrend": int(bool(latest_metrics[(sym, 'is_uptrend')]))
+            }
+            data_for_csv.append(row_data)
+        
+        df_to_save = pd.DataFrame(data_for_csv)
+        df_to_save.to_csv(out_csv, index=False)
         print(f"[green]Saved:[/green] {out_csv}")
     except Exception as e:
         print(f"[red]Failed to save CSV:[/red] {e}")
