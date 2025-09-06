@@ -1,7 +1,6 @@
 import yfinance as yf
 import pandas as pd
 import numpy as np
-from scipy.stats import zscore
 
 def _calculate_zscore(series: pd.Series, years: int = 3) -> float:
     """
@@ -52,6 +51,7 @@ def valuation_snapshot(ticker: str) -> dict:
 
         # --- PE Ratio ---
         pe = info.get('trailingPE', np.nan)
+        if pe is None: pe = np.nan
 
         # --- EV/Sales or EV/EBIT ---
         enterprise_value = info.get('enterpriseValue', np.nan)
