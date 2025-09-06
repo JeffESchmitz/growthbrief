@@ -112,6 +112,10 @@ def run_backtest(grs_df: pd.DataFrame, prices: pd.DataFrame, top_n: int = 5) -> 
     # Define exits (e.g., hold for one month, then rebalance)
     exits = entries.shift(1, freq='M').fillna(False) # Exit at the start of next month
 
+    # Reindex entries and exits to match prices index
+    entries = entries.reindex(prices.index, fill_value=False)
+    exits = exits.reindex(prices.index, fill_value=False)
+
     # Run backtest
     pf = vbt.Portfolio.from_signals(
         prices,
