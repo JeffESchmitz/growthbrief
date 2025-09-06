@@ -18,9 +18,13 @@ def winsorize_series(series: pd.Series, lower_bound: float = 1, upper_bound: flo
     """
     Winsorizes a series to the specified percentile bounds.
     """
-    lower_value = series.quantile(lower_bound / 100.0)
-    upper_value = series.quantile(upper_bound / 100.0)
-    return series.clip(lower=lower_value, upper=upper_value)
+    non_nan_series = series.dropna()
+    if non_nan_series.empty:
+        return pd.Series(np.nan, index=series.index)
+    lower_value = non_nan_series.quantile(lower_bound / 100.0)
+    upper_value = non_nan_series.quantile(upper_bound / 100.0)
+    winsorized_non_nan = non_nan_series.clip(lower=lower_value, upper=upper_value)
+    return winsorized_non_nan.reindex(series.index)
 
 def score_grs(df: pd.DataFrame) -> pd.DataFrame:
     """
