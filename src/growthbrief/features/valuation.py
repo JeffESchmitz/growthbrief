@@ -14,7 +14,7 @@ def _calculate_zscore(series: pd.Series, years: int = 3) -> float:
     series_sorted = series.sort_index(ascending=True)
     
     # Take the last 'years' values (excluding the most recent one for historical context)
-    historical_data = series_sorted.iloc[-(years + 1):-1] # Exclude current, take previous 'years' values
+    historical_data = series_sorted.iloc[0:years]
     current_value = series_sorted.iloc[-1]
 
     if historical_data.empty or historical_data.std() == 0:
@@ -51,7 +51,8 @@ def valuation_snapshot(ticker: str) -> dict:
 
         # --- PE Ratio ---
         pe = info.get('trailingPE', np.nan)
-        if pe is None: pe = np.nan
+        if pe is None:
+            pe = np.nan
 
         # --- EV/Sales or EV/EBIT ---
         enterprise_value = info.get('enterpriseValue', np.nan)
