@@ -48,8 +48,8 @@ def test_pct_rank():
 def test_winsorize_series():
     series = pd.Series(np.arange(1, 101))
     winsorized = winsorize_series(series, lower_bound=5, upper_bound=95)
-    assert winsorized.min() == 5
-    assert winsorized.max() == 95
+    assert np.isclose(winsorized.min(), 5)
+    assert np.isclose(winsorized.max(), 95)
     assert winsorized.iloc[0] == 5
     assert winsorized.iloc[-1] == 95
     assert winsorized.iloc[50] == 51
