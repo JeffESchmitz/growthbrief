@@ -7,17 +7,18 @@ def _calculate_zscore(series: pd.Series, years: int = 3) -> float:
     Calculates the z-score for the latest value in a series against the past 'years' of data.
     Returns NaN if insufficient data.
     """
+    series = series.dropna() # Ensure no NaNs in calculation
     if len(series) < years + 1: # Need current + 'years' of historical data
         return np.nan
-    
+
     # Ensure the series is sorted from oldest to newest for consistent z-score calculation
-    series_sorted = series.sort_index(ascending=True)
-    
+    series_sorted = series.sort_values(ascending=True) # Use sort_values for Series
+
     # Take the last 'years' values (excluding the most recent one for historical context)
-    historical_data = series_sorted.iloc[0:years]
+    historical_data = series_sorted.iloc[-(years + 1):-1] # Exclude current, take previous 'years' values
     current_value = series_sorted.iloc[-1]
 
-    if historical_data.empty or historical_data.std() == 0:
+    if historical_data.empty or historical_data.std(ddof=0) == 0: # Use ddof=0 for consistency with np.std
         return np.nan
 
     # Calculate z-score of the current value against the historical data
