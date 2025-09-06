@@ -130,7 +130,7 @@ def run_backtest(grs_df: pd.DataFrame, prices: pd.DataFrame, top_n: int = 5) -> 
     # Calculate metrics
     metrics = {
         'cagr': pf.annual_returns().iloc[-1] if not pf.annual_returns().empty else np.nan,
-        'stdev': pf.annual_volatilities().iloc[-1] if not pf.annual_volatilities().empty else np.nan,
+        'stdev': pf.annualized_volatility().iloc[-1] if not pf.annualized_volatility().empty else np.nan,
         'max_drawdown': pf.max_drawdowns().iloc[-1] if not pf.max_drawdowns().empty else np.nan,
         'hit_rate': pf.win_rates().iloc[-1] if not pf.win_rates().empty else np.nan,
         'sharpe_ratio': pf.sharpe_ratios().iloc[-1] if not pf.sharpe_ratios().empty else np.nan,
