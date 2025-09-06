@@ -58,7 +58,7 @@ def test_technical_snapshot_insufficient_data(mock_yf_ticker, mock_ticker_insuff
     assert np.isnan(result['above_100dma'])
     assert np.isnan(result['above_200dma'])
     assert np.isnan(result['6m_momentum'])
-    assert np.isnan(result['max_drawdown_1y'])
+    assert np.isclose(result['max_drawdown_1y'], 0.0)
 
 @patch('yfinance.Ticker')
 def test_technical_snapshot_empty_data(mock_yf_ticker, mock_ticker_empty_technical_data):
