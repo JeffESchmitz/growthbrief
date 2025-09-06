@@ -129,12 +129,12 @@ def run_backtest(grs_df: pd.DataFrame, prices: pd.DataFrame, top_n: int = 5) -> 
 
     # Calculate metrics
     metrics = {
-        'cagr': pf.annual_returns().iloc[-1] if not pf.annual_returns().empty else np.nan,
-        'stdev': pf.annualized_volatility().iloc[-1] if not pf.annualized_volatility().empty else np.nan,
-        'max_drawdown': pf.max_drawdown().iloc[-1] if not pf.max_drawdown().empty else np.nan,
+        'cagr': pf.annual_returns().iloc[-1] if pf.annual_returns().shape[0] > 0 else np.nan,
+        'stdev': pf.annualized_volatility().iloc[-1] if pf.annualized_volatility().shape[0] > 0 else np.nan,
+        'max_drawdown': pf.max_drawdown().iloc[-1] if pf.max_drawdown().shape[0] > 0 else np.nan,
         'hit_rate': pf.trades.win_rate() if pf.trades.count().sum() > 0 else np.nan,
-        'sharpe_ratio': pf.sharpe_ratio().iloc[-1] if not pf.sharpe_ratio().empty else np.nan,
-        'total_return': pf.total_return().iloc[-1] if not pf.total_return().empty else np.nan,
+        'sharpe_ratio': pf.sharpe_ratio().iloc[-1] if pf.sharpe_ratio().shape[0] > 0 else np.nan,
+        'total_return': pf.total_return().iloc[-1] if pf.total_return().shape[0] > 0 else np.nan,
     }
 
     return metrics
