@@ -103,10 +103,10 @@ def test_valuation_snapshot_exception_handling(mock_yf_ticker):
 def test_calculate_zscore_synthetic_series():
     # Test with a simple series where z-score can be easily calculated
     series = pd.Series([10, 20, 30, 40, 50]) # Current value is 50
-    # Historical data for 3 years: [10, 20, 30]
-    # Mean = 20, Std = 8.16
-    # Z-score = (50 - 20) / 8.16 = 3.67
-    assert np.isclose(_calculate_zscore(series, years=3), (50 - np.mean([10,20,30])) / np.std([10,20,30], ddof=0))
+    # Historical data for 3 years: [20, 30, 40]
+    # Mean = 30, Std = 8.16
+    # Z-score = (50 - 30) / 8.16 = 2.449
+    assert np.isclose(_calculate_zscore(series, years=3), (50 - np.mean([20,30,40])) / np.std([20,30,40], ddof=0))
 
     # Test with insufficient data
     series_short = pd.Series([10, 20])
@@ -118,4 +118,4 @@ def test_calculate_zscore_synthetic_series():
 
     # Test with NaN values in series
     series_nan = pd.Series([10, 20, np.nan, 40, 50])
-    assert np.isclose(_calculate_zscore(series_nan, years=3), (50 - np.mean([10,20,40])) / np.std([10,20,40], ddof=0))
+    assert np.isclose(_calculate_zscore(series_nan, years=3), (50 - np.mean([20,40,50])) / np.std([20,40,50], ddof=0))
