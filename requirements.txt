@@ -1,0 +1,17 @@
+pandas
+numpy
+requests
+pydantic
+python-dotenv
+rich
+plotly
+yfinance
+vectorbt
+praw
+alpaca-trade-api
+pytest
+pytest-cov
+vcrpy
+responses
+pyflakes
+autopep8

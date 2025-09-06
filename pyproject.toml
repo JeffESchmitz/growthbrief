@@ -1,0 +1,8 @@
+[project]
+name = "growthbrief"
+version = "0.1.0"
+description = "Experimental portfolio + AI analysis toolkit"
+dependencies = []
+[[project.authors]]
+name = "Jeff (and Personas)"
+
