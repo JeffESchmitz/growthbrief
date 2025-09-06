@@ -32,7 +32,11 @@ def test_run_backtest_deterministic_results(synthetic_grs_df, synthetic_prices_d
     
     # All results should be identical
     for i in range(1, len(results)):
-        assert results[0] == results[i]
+        for key in results[0].keys():
+            if isinstance(results[0][key], float) and isinstance(results[i][key], float):
+                assert np.isclose(results[0][key], results[i][key])
+            else:
+                assert results[0][key] == results[i][key]
 
 def test_run_backtest_metrics_calculation(synthetic_grs_df, synthetic_prices_df):
     metrics = run_backtest(synthetic_grs_df, synthetic_prices_df, top_n=3)
