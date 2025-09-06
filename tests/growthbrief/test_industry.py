@@ -1,8 +1,8 @@
 import pytest
 import pandas as pd
 import numpy as np
-from unittest.mock import Mock, patch
-from growthbrief.features.industry import industry_snapshot, SECTOR_ETF_MAP
+from unittest.mock import patch
+from growthbrief.features.industry import industry_snapshot
 
 # Fixture for a mock yfinance.download with complete data
 @pytest.fixture

@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 import numpy as np
-from growthbrief.scoring import score_grs, pct_rank, winsorize_series
+from growthbrief.scoring import score_grs, pct_rank
 
 # Fixture for a synthetic DataFrame with various feature values
 @pytest.fixture

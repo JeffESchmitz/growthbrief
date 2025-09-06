@@ -3,14 +3,7 @@ import pandas as pd
 import numpy as np
 from growthbrief.backtest import run_backtest
 
-# Fixture for synthetic GRS DataFrame
-@pytest.fixture
-def synthetic_grs_df():
-    data = {
-        'GRS': [80, 70, 60, 50, 40, 30, 20, 10],
-    }
-    df = pd.DataFrame(data, index=['AAPL', 'MSFT', 'GOOG', 'AMZN', 'META', 'TSLA', 'NVDA', 'NFLX'])
-    return df
+
 
         # Fixture for synthetic GRS DataFrame
 @pytest.fixture

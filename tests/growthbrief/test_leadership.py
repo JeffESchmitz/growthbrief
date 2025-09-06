@@ -1,4 +1,3 @@
-import pytest
 from growthbrief.features.leadership import leadership_confidence_from_text
 
 def test_leadership_confidence_from_text_positive():

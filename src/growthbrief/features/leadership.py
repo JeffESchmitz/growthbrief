@@ -1,4 +1,3 @@
-import numpy as np
 
 def leadership_confidence_from_text(text: str) -> float:
     """

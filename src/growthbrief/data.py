@@ -1,7 +1,6 @@
-import os
 import time
 import logging
-from datetime import date as dt_date, timedelta as dt_timedelta, datetime as dt_datetime
+from datetime import timedelta as dt_timedelta, datetime as dt_datetime
 from pathlib import Path
 
 import pandas as pd
