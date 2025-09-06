@@ -96,23 +96,23 @@ def run_backtest(grs_df: pd.DataFrame, prices: pd.DataFrame, top_n: int = 5) -> 
         grs_scores_aligned[ticker] = grs_df.loc[ticker, 'GRS']
 
     # Generate entries based on top N GRS scores at rebalance dates
-    entries = pd.DataFrame(False, index=prices.index, columns=prices.columns)
+    entries_data = []
     for rebalance_date in rebalance_dates:
-        # Find the GRS scores for the previous month (or latest available)
-        # This is where historical GRS data is crucial.
-        # For this simplified version, we use the static grs_df.
-        
-        # Get top N tickers based on GRS scores
         top_n_tickers = grs_df['GRS'].nlargest(top_n).index.tolist()
         
-        # Set entries for these tickers at the rebalance date
-        if rebalance_date in entries.index:
-            entries.loc[rebalance_date, top_n_tickers] = True
+        # Create a row for this rebalance date
+        row = {col: False for col in prices.columns}
+        for ticker in top_n_tickers:
+            if ticker in row: # Ensure ticker is in prices.columns
+                row[ticker] = True
+        entries_data.append(row)
+    
+    entries = pd.DataFrame(entries_data, index=rebalance_dates, columns=prices.columns)
 
     # Define exits (e.g., hold for one month, then rebalance)
     exits = entries.shift(1, freq='M').fillna(False) # Exit at the start of next month
 
-    # Reindex entries and exits to match prices index
+    # Ensure entries and exits have the same index as prices for vectorbt
     entries = entries.reindex(prices.index, fill_value=False)
     exits = exits.reindex(prices.index, fill_value=False)
 
